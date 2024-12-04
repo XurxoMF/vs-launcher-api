@@ -4,7 +4,6 @@ import https from "https"
 import cors from "cors"
 import fs from "fs"
 import path from "path"
-import { QueryFailedError } from "typeorm"
 
 // Importar las variables de entorno
 import dotenv from "dotenv"
@@ -12,9 +11,9 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") })
 
 // Imports de funciones personalizadas
 import { initializeDatabase, ADS } from "@db"
-import { Changelogs, GameVersions } from "@repos"
 import versionsRouter from "@/routes/versions"
 import changelogsRouter from "@/routes/changelogs"
+import newsRouter from "@/routes/news"
 
 const app = express()
 const port = process.env.PORT || 3005
@@ -28,8 +27,10 @@ app.get("/", (req, res) => {
   res.send("Vintage Story Launcher API OK")
 })
 
+app.use("/backgrounds", express.static(path.join(__dirname, `../public/backgrounds`)))
 app.use("/versions", versionsRouter)
 app.use("/changelogs", changelogsRouter)
+app.use("/news", newsRouter)
 
 initializeDatabase()
   .then(() => {
