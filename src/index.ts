@@ -10,10 +10,11 @@ import dotenv from "dotenv"
 dotenv.config({ path: path.resolve(__dirname, "../.env") })
 
 // Imports de funciones personalizadas
-import { initializeDatabase, ADS } from "@db"
+import { initializeDatabase } from "@db"
 import versionsRouter from "@/routes/versions"
 import changelogsRouter from "@/routes/changelogs"
 import newsRouter from "@/routes/news"
+import settingsRouter from "@/routes/settings"
 
 const app = express()
 const port = process.env.PORT || 3005
@@ -23,14 +24,19 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+// Health check
 app.get("/", (req, res) => {
   res.send("Vintage Story Launcher API OK")
 })
 
+// Static files routes
 app.use("/backgrounds", express.static(path.join(__dirname, `../public/backgrounds`)))
+
+// API endpoints
 app.use("/versions", versionsRouter)
 app.use("/changelogs", changelogsRouter)
 app.use("/news", newsRouter)
+app.use("/settings", settingsRouter)
 
 initializeDatabase()
   .then(() => {
