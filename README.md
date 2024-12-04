@@ -4,12 +4,10 @@ For the VS Launcher to work properly I needed a way to get changelog updates, ne
 
 Where is the problem? Anego Studios does not ahve any API for this. There is one for the ModDB for not for this.
 
-What was my solution, creating a little API that I'll manually update to add new game installers, news, changelogs and so on.
+What was my solution, creating a little API to serve all this things in one palce.
 
-## Why tf are you using json and ts files for saving data? Are you crazy?
+### Why the .zip files with the game?
 
-I know a BD is a thousand times better for this but this API it's only a temporal patch.
+Anego Studios does not serve .zip files with the windows game content si I had no other option that making my own ones.
 
-I'll contact Anego Studios to ask if they can create an oficial API for this things. If they can, I'll delete this API, if they don't, I'll create an optimized version of this API with a DB, changelog and news auto-importer... but I need something to show them the potential of an API and don't be like "Do it bc it may be cool..." I'll have the power to say "Do it bc IT'S cool" xD
-
-So... yes, this'll be only for "testing" purposes and it'll not last long so if it works bad or slow... give me some time ^^
+Those are literally the game downloaded from the official webpage, installed and compressed... I didn't modified anything... It's just to make it easier for you as user and for me as dev to implement all the auto-download and installation of the game.
