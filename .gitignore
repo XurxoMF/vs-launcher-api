@@ -1,0 +1,7 @@
+package-lock.json
+node_modules
+db
+.env
+public/versions/windows/*.zip
+public/versions/linux/*.tar.gz
+public/versions/macos/*.tar.gz

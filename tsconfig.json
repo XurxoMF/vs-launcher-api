@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "strict": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@db": ["./src/database/index.ts"],
+            "@repos": ["./src/database/models/index.ts"],
+            "@routes/*": ["src/routes/*"]
+        },
+    },
+    "include": ["src/**/*.ts", "src/types/env.d.ts"]
+}
