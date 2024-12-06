@@ -10,8 +10,10 @@ import dotenv from "dotenv"
 dotenv.config({ path: path.resolve(__dirname, "../.env") })
 
 // Imports de funciones personalizadas
-import { initializeDatabase } from "@db"
+import { initializeDatabase, ADS } from "@db"
+// import { GameVersions } from "@repos"
 import versionsRouter from "@/routes/versions"
+// import ImportGameVersions from "./gameVersionsImporter.json"
 import changelogsRouter from "@/routes/changelogs"
 import newsRouter from "@/routes/news"
 import settingsRouter from "@/routes/settings"
@@ -25,7 +27,15 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // Health check
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  // const gameVersionsRepo = ADS.getRepository(GameVersions)
+
+  // for (let i = ImportGameVersions.length - 1; i >= 0; i--) {
+  //   const newVersion = ImportGameVersions[i]
+  //   gameVersionsRepo.create(newVersion)
+  //   await gameVersionsRepo.save(newVersion)
+  // }
+
   res.send("Vintage Story Launcher API OK")
 })
 

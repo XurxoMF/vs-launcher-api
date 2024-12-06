@@ -6,7 +6,7 @@ export const getChangelogs = async (req: Request, res: Response) => {
   const changelogsRepo = ADS.getRepository(Changelogs)
 
   try {
-    const changelogs = await changelogsRepo.find()
+    const changelogs = await changelogsRepo.find({ order: { id: "DESC" } })
 
     if (!changelogs) {
       res.status(404).json({ message: "No changelogs found" })
@@ -32,10 +32,9 @@ export const getChangelogs = async (req: Request, res: Response) => {
 export const getChangelogsByVersion = async (req: Request, res: Response) => {
   const version = req.params.version
   const changelogsRepo = ADS.getRepository(Changelogs)
-  const parsedVersion = version.replace(/-/g, ".")
 
   try {
-    const changelog = await changelogsRepo.findOneBy({ version: parsedVersion })
+    const changelog = await changelogsRepo.findOneBy({ version })
 
     if (!changelog) {
       res.status(404).json({ message: "Changelog not found" })

@@ -6,7 +6,7 @@ export const getVersions = async (req: Request, res: Response) => {
   const gameVersionsRepo = ADS.getRepository(GameVersions)
 
   try {
-    const gameVersions = await gameVersionsRepo.find()
+    const gameVersions = await gameVersionsRepo.find({ order: { id: "DESC" } })
 
     if (!gameVersions) {
       res.status(404).json({ message: "No versions found" })
@@ -31,10 +31,9 @@ export const getVersions = async (req: Request, res: Response) => {
 export const getVersionByVersion = async (req: Request, res: Response) => {
   const version = req.params.version
   const gameVersionsRepo = ADS.getRepository(GameVersions)
-  const parsedVersion = version.replace(/-/g, ".")
 
   try {
-    const gameVersion = await gameVersionsRepo.findOneBy({ version: parsedVersion })
+    const gameVersion = await gameVersionsRepo.findOneBy({ version })
 
     if (!gameVersion) {
       res.status(404).json({ message: "Version not found" })
