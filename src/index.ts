@@ -38,9 +38,6 @@ app.get("/", async (req, res) => {
   res.send("Vintage Story Launcher API OK")
 })
 
-// Static files routes
-app.use("/backgrounds", express.static(path.join(__dirname, `../public/backgrounds`)))
-
 // API endpoints
 app.use("/versions", versionsRouter)
 app.use("/news", newsRouter)
