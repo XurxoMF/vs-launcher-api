@@ -14,7 +14,6 @@ import { initializeDatabase, ADS } from "@db"
 // import { GameVersions } from "@repos"
 import versionsRouter from "@/routes/versions"
 // import ImportGameVersions from "./gameVersionsImporter.json"
-import changelogsRouter from "@/routes/changelogs"
 import newsRouter from "@/routes/news"
 import settingsRouter from "@/routes/settings"
 
@@ -44,7 +43,6 @@ app.use("/backgrounds", express.static(path.join(__dirname, `../public/backgroun
 
 // API endpoints
 app.use("/versions", versionsRouter)
-app.use("/changelogs", changelogsRouter)
 app.use("/news", newsRouter)
 app.use("/settings", settingsRouter)
 
