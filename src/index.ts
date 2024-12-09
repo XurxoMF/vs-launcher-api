@@ -4,6 +4,7 @@ import https from "https"
 import cors from "cors"
 import fs from "fs"
 import path from "path"
+const WebSocket = require("ws")
 
 // Importar las variables de entorno
 import dotenv from "dotenv"
@@ -52,6 +53,18 @@ initializeDatabase()
       const key = fs.readFileSync(path.resolve(__dirname, process.env.SSL_KEY_PATH))
       const cert = fs.readFileSync(path.resolve(__dirname, process.env.SSL_CERT_PATH))
       const credentials = { key, cert }
+
+      const server = https.createServer(credentials, app)
+
+      const wss = new WebSocket.Server({ server })
+
+      wss.on("connection", (ws: { on: (arg0: string, arg1: (message: any) => void) => void; send: (arg0: string) => void }) => {
+        ws.on("message", (message) => {
+          console.log("received: %s", message)
+        })
+        ws.send("something")
+      })
+
       https.createServer(credentials, app).listen(port, () => {
         console.log(`🟢 Servidor ejecutándose en ${process.env.PROTOCOL}${process.env.DOMAIN}:${port}`)
       })
