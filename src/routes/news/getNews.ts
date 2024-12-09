@@ -15,7 +15,7 @@ export const getNews = async (req: Request, res: Response) => {
         news.map((current_new) => {
           return <News>{
             id: current_new?.id,
-            md: `${process.env.PROTOCOL}${process.env.DOMAIN}:${process.env.PORT}${current_new?.md}`,
+            md: `${process.env.PROTOCOL}${process.env.DOMAIN}${current_new?.md}`,
             author: current_new?.author,
             title: current_new?.title,
             date: current_new?.date,
@@ -42,7 +42,7 @@ export const getNewById = async (req: Request, res: Response) => {
     } else {
       res.json({
         id: current_new?.id,
-        md: `${process.env.PROTOCOL}${process.env.DOMAIN}:${process.env.PORT}${current_new?.md}`,
+        md: `${process.env.PROTOCOL}${process.env.DOMAIN}${current_new?.md}`,
         author: current_new?.author,
         title: current_new?.title,
         date: current_new?.date,
