@@ -65,7 +65,7 @@ initializeDatabase()
         ws.send("something")
       })
 
-      https.createServer(credentials, app).listen(port, () => {
+      server.listen(port, () => {
         console.log(`🟢 Servidor ejecutándose en ${process.env.PROTOCOL}${process.env.DOMAIN}:${port}`)
       })
     } else {
