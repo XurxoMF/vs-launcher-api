@@ -6,7 +6,7 @@ export const getNews = async (req: Request, res: Response) => {
   const newsRepo = ADS.getRepository(News)
 
   try {
-    const news = await newsRepo.find({ order: { id: "ASC" } })
+    const news = await newsRepo.find({ order: { id: "DESC" } })
 
     if (!news) {
       res.status(404).json({ message: "No news found" })
