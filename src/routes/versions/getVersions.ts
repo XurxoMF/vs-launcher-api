@@ -17,7 +17,7 @@ export const getVersions = async (req: Request, res: Response) => {
             version: version?.version,
             windows: version?.windows ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.windows}` : null,
             linux: version?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.linux}` : null,
-            macos: version?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.macos}` : null
+            macos: version?.macos ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.macos}` : null
           }
         })
       )
@@ -42,7 +42,7 @@ export const getVersionByVersion = async (req: Request, res: Response) => {
         version: gameVersion?.version,
         windows: gameVersion?.windows ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.windows}` : null,
         linux: gameVersion?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.linux}` : null,
-        macos: gameVersion?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.macos}` : null
+        macos: gameVersion?.macos ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.macos}` : null
       })
     }
   } catch (error) {
