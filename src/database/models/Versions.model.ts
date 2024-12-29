@@ -1,21 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Unique } from "typeorm"
 
-@Entity("game_versions")
-export class GameVersions {
+@Entity("versions")
+export class Versions {
   @PrimaryGeneratedColumn()
   id!: number
 
   @Column({ unique: true })
   version!: string
 
-  @Column({ nullable: true })
-  windows?: string
+  @Column()
+  type!: string
 
-  @Column({ nullable: true })
-  linux?: string
-
-  @Column({ nullable: true })
-  macos?: string
+  @Column()
+  releaseDate!: number
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date

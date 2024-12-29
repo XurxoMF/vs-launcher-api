@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 import { ADS } from "@db"
-import { GameVersions } from "@repos"
+import { Versions } from "@repos"
 
 export const getVersions = async (req: Request, res: Response) => {
-  const gameVersionsRepo = ADS.getRepository(GameVersions)
+  const gameVersionsRepo = ADS.getRepository(Versions)
 
   try {
     const gameVersions = await gameVersionsRepo.find({ order: { id: "DESC" } })
@@ -13,11 +13,12 @@ export const getVersions = async (req: Request, res: Response) => {
     } else {
       res.json(
         gameVersions.map((version) => {
-          return <GameVersions>{
+          return {
             version: version?.version,
-            windows: version?.windows ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.windows}` : null,
-            linux: version?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.linux}` : null,
-            macos: version?.macos ? `${process.env.PROTOCOL}${process.env.DOMAIN}${version?.macos}` : null
+            type: version?.type,
+            releaseDate: version?.releaseDate,
+            windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/versions/files/windows/${version?.version}.zip`,
+            linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/versions/files/linux/${version?.version}.zip`
           }
         })
       )
@@ -30,7 +31,7 @@ export const getVersions = async (req: Request, res: Response) => {
 
 export const getVersionByVersion = async (req: Request, res: Response) => {
   const version = req.params.version
-  const gameVersionsRepo = ADS.getRepository(GameVersions)
+  const gameVersionsRepo = ADS.getRepository(Versions)
 
   try {
     const gameVersion = await gameVersionsRepo.findOneBy({ version })
@@ -40,9 +41,10 @@ export const getVersionByVersion = async (req: Request, res: Response) => {
     } else {
       res.json({
         version: gameVersion?.version,
-        windows: gameVersion?.windows ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.windows}` : null,
-        linux: gameVersion?.linux ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.linux}` : null,
-        macos: gameVersion?.macos ? `${process.env.PROTOCOL}${process.env.DOMAIN}${gameVersion?.macos}` : null
+        type: gameVersion?.type,
+        releaseDate: gameVersion?.releaseDate,
+        windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/versions/files/windows/${gameVersion?.version}.zip`,
+        linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/versions/files/linux/${gameVersion?.version}.zip`
       })
     }
   } catch (error) {

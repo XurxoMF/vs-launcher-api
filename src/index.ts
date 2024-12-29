@@ -10,8 +10,6 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") })
 // Imports de funciones personalizadas
 import { initializeDatabase, ADS } from "@db"
 import versionsRouter from "@/routes/versions"
-import newsRouter from "@/routes/news"
-import settingsRouter from "@/routes/settings"
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -28,8 +26,6 @@ app.get("/", async (req, res) => {
 
 // API endpoints
 app.use("/versions", versionsRouter)
-app.use("/news", newsRouter)
-app.use("/settings", settingsRouter)
 
 initializeDatabase()
   .then(() => {
