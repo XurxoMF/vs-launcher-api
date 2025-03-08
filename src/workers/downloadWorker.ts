@@ -1,0 +1,39 @@
+import { workerData, parentPort } from "worker_threads"
+import axios from "axios"
+import fse from "fs-extra"
+import { join } from "path"
+
+const { url, outputPath, fileName } = workerData
+
+const pathToDownload = join(outputPath, fileName)
+
+console.log(`💡 Dowloading ${fileName} on ${outputPath} from ${url}...`)
+
+axios({
+  url,
+  method: "GET",
+  responseType: "stream"
+})
+  .then(({ data }) => {
+    if (!fse.existsSync(outputPath)) {
+      fse.mkdirSync(outputPath, { recursive: true })
+    }
+
+    const writer = fse.createWriteStream(pathToDownload)
+
+    data.pipe(writer)
+
+    writer.on("finish", () => {
+      console.log(`🟢 Finished ${fileName} download!`)
+      parentPort?.postMessage({ type: "finished", path: pathToDownload })
+    })
+
+    writer.on("error", (err) => {
+      console.log(`🔴 Error writing ${fileName}!`)
+      parentPort?.postMessage({ type: "error", error: err })
+    })
+  })
+  .catch((err) => {
+    console.log(`🔴 Error downloading ${fileName}!`)
+    parentPort?.postMessage({ type: "error", error: err })
+  })
