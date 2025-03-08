@@ -18,9 +18,9 @@ export const getVersions = async (c: Context) => {
             type: version?.type,
             releaseDate: version?.releaseDate,
             importedDate: version?.importedDate,
-            windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && `:${process.env.PORT}`}/versions/files/windows/${version?.version}.zip`,
+            windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/files/windows/${version?.version}.zip`,
             windowsSha: version?.winSha,
-            linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && `:${process.env.PORT}`}/versions/files/linux/${version?.version}.zip`,
+            linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/files/linux/${version?.version}.zip`,
             linuxSha: version?.linuxSha
           }
         }, 200)
@@ -48,9 +48,9 @@ export const getVersionByVersion = async (c: Context) => {
           type: gameVersion?.type,
           releaseDate: gameVersion?.releaseDate,
           importedDate: gameVersion?.importedDate,
-          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && `:${process.env.PORT}`}/versions/windows/${gameVersion?.version}.zip`,
+          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/windows/${gameVersion?.version}.zip`,
           windowsSha: gameVersion?.winSha,
-          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && `:${process.env.PORT}`}/versions/linux/${gameVersion?.version}.zip`,
+          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/linux/${gameVersion?.version}.zip`,
           linuxSha: gameVersion?.linuxSha
         },
         200

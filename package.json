@@ -8,7 +8,6 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "@types/fs-extra": "^11.0.4",
     "axios": "^1.8.2",
     "bun": "^1.2.4",
     "dotenv": "^16.4.7",
@@ -16,9 +15,12 @@
     "hono": "^4.7.4",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
+    "tar-fs": "^3.0.8",
     "typeorm": "^0.3.21"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/fs-extra": "^11.0.4",
+    "@types/tar-fs": "^2.0.4"
   }
 }

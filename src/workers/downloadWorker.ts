@@ -25,7 +25,7 @@ axios({
 
     writer.on("finish", () => {
       console.log(`🟢 Finished ${fileName} download!`)
-      parentPort?.postMessage({ type: "finished", path: pathToDownload })
+      parentPort?.postMessage({ type: "finished" })
     })
 
     writer.on("error", (err) => {

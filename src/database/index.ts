@@ -2,7 +2,7 @@ import { DataSource } from "typeorm"
 
 export const ADS = new DataSource({
   type: "sqlite",
-  database: `${process.env.DB_PATH}`,
+  database: "/app/db/vslapi.sqlite",
   entities: [__dirname + "/models/*.model.ts"],
   synchronize: true
 })
@@ -10,8 +10,8 @@ export const ADS = new DataSource({
 export const initializeDatabase = async () => {
   try {
     await ADS.initialize()
-    console.log("🟢 Data Source inicializado!")
+    console.log("🟢 Data Source initialized!")
   } catch (err) {
-    console.error("🔴 Error al inicializar el Data Source:", err)
+    console.error("🔴 Error initializing Data Source:", err)
   }
 }

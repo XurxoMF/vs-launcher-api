@@ -7,18 +7,19 @@ import * as dotenv from "dotenv"
 import { resolve } from "path"
 
 // ENV imports
-dotenv.config({ path: resolve(__dirname, "../.env") })
+dotenv.config({ path: "/app/.env" })
 
 // Database imports
 import { initializeDatabase, ADS } from "@db"
 import { Versions } from "@repos"
 
+import { downloadLinuxFile, downloadMacFile, downloadWindowsFile } from "@/utils/downloadManagers"
+import { extractLinuxFile, extractMacFile, extractWindowsFile } from "@/utils/extractManagers"
+
 // Route imports
 import versionsRouter from "@/routes/versions"
-import { downloadLinuxFile, downloadMacFile, downloadWindowsFile } from "@/utils/downloadManagers"
 
 const app = new Hono()
-const port = process.env.PORT || 3000
 
 // Middleware
 app.use(cors())
@@ -27,7 +28,7 @@ app.use(cors())
 app.use(
   "/files/*",
   serveStatic({
-    root: resolve(__dirname, `../public`),
+    root: resolve(__dirname, `/app/public`),
     rewriteRequestPath: (path) => {
       return path.replace(/^\/files/, "")
     }
@@ -53,7 +54,7 @@ async function test() {
   const data = await fetch("https://api.vintagestory.at/stable-unstable.json")
   const json: DVersionsType = await data.json()
 
-  // const versions = Object.keys(json)
+  const versions = Object.keys(json)
 
   // for (const version of versions) {
   //   const gameVersion = await gameVersionsRepo.findOneBy({ version })
@@ -70,21 +71,33 @@ async function test() {
   //   console.log(`No existe la versión ${version}`)
   // }
 
-  const version = json["1.20.5-rc.3"]
+  const version = "1.20.5-rc.3"
+  const versionData = json[version]
 
-  const winRes = await downloadWindowsFile("1.20.5-rc.3", version["windows"])
-  const linuxRes = await downloadLinuxFile("1.20.5-rc.3", version["linux"])
-  const macRes = await downloadMacFile("1.20.5-rc.3", version["mac"])
+  const winFile = await downloadWindowsFile(version, versionData["windows"])
+  const linuxFile = await downloadLinuxFile(version, versionData["linux"])
+  const macFile = await downloadMacFile(version, versionData["mac"])
 
-  console.log(winRes, linuxRes, macRes)
+  if (!winFile || !linuxFile || !macFile) return console.log("🔴 Some of the OS versions couldn't be downloaded!")
+
+  const winOut = await extractWindowsFile(version, winFile)
+  const linuxOut = await extractLinuxFile(version, linuxFile)
+  const macOut = await extractMacFile(version, macFile)
+
+  if (!winOut || !linuxOut || !macOut) return console.log("🔴 Some of the OS versions couldn't be extracted!")
+
+  console.log(`🟢 All OS versions downloaded and extracted!:\n${winOut}\n${linuxOut}\n${macOut}`)
 }
 
 // Initialize server
-initializeDatabase()
-  .then(() => {
-    serve({ fetch: app.fetch, port })
-    console.log(`🟢 Server running on ${process.env.PROTOCOL}${process.env.DOMAIN}:${port}`)
-  })
-  .catch((error) => {
-    console.error("🔴 Error connecting DB:", error)
-  })
+;(async () => {
+  try {
+    await initializeDatabase()
+
+    serve({ fetch: app.fetch, port: 3000 })
+
+    console.log(`🟢 Server running on ${process.env.PROTOCOL}${process.env.DOMAIN}:${3000}`)
+  } catch (err) {
+    console.error("🔴 Error starting API:", err)
+  }
+})()
