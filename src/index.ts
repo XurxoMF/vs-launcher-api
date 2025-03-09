@@ -17,6 +17,7 @@ import { checkVersionsTopRocess, IMPORTING } from "@/utils/checkVersionsToProces
 
 // Route imports
 import versionsRouter from "@/routes/versions"
+import { startDClient } from "./discord"
 
 const app = new Hono()
 
@@ -50,9 +51,10 @@ setInterval(checkVersionsTopRocess, 5000)
   try {
     await initializeDatabase()
 
-    serve({ fetch: app.fetch, port: 3000 })
+    await startDClient()
 
-    console.log(`🟢 Server running on ${process.env.PROTOCOL}${process.env.DOMAIN}:${3000}`)
+    serve({ fetch: app.fetch, port: 3000 })
+    console.log(`🟢 Server running on ${process.env.PROTOCOL}${process.env.DOMAIN}!`)
   } catch (err) {
     console.error("🔴 Error starting API:", err)
   }

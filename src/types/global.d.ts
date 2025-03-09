@@ -1,5 +1,5 @@
 declare global {
-  type DVersionType = {
+  type VersionType = {
     filename: string
     filesize: string
     md5: string
@@ -9,13 +9,15 @@ declare global {
     }
   }
 
-  type DVersionWrapperType = {
-    [key: string]: DVersionType
+  type VersionWrapperType = {
+    [key: string]: VersionType
   }
 
-  type DVersionsType = {
-    [key: string]: DVersionWrapperType
+  type VersionsType = {
+    [key: string]: VersionWrapperType
   }
+
+  type OptionalExceptFor<T, TRequired extends keyof T = keyof T> = Partial<Pick<T, Exclude<keyof T, TRequired>>> & Required<Pick<T, TRequired>>
 }
 
 export {}

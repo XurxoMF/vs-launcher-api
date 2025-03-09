@@ -5,12 +5,16 @@
   "license": "MIT",
   "description": "API to manage and serve vs-launcher data and files.",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "start": "bun run src/index.ts",
+    "d-deploy-commands": "bun run src/discord/deploy-commands.ts",
+    "d-undeploy-commands": "bun run src/discord/undeploy-commands.ts"
   },
   "dependencies": {
     "archiver": "^7.0.1",
     "axios": "^1.8.2",
     "bun": "^1.2.4",
+    "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "fs-extra": "^11.3.0",
     "hono": "^4.7.4",
