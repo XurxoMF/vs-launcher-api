@@ -5,6 +5,7 @@ export class Versions {
   @PrimaryGeneratedColumn()
   id!: number
 
+  // "stable", "rc" or "pre"
   @Column({ unique: true })
   version!: string
 

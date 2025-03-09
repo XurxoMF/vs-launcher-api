@@ -18,10 +18,12 @@ export const getVersions = async (c: Context) => {
             type: version?.type,
             releaseDate: version?.releaseDate,
             importedDate: version?.importedDate,
-            windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/files/windows/${version?.version}.zip`,
+            windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/windows/${version?.version}.zip`,
             windowsSha: version?.winSha,
-            linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/files/linux/${version?.version}.zip`,
-            linuxSha: version?.linuxSha
+            linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/linux/${version?.version}.zip`,
+            linuxSha: version?.linuxSha,
+            macos: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos/${version?.version}.zip`,
+            macosSha: version?.macSha
           }
         }, 200)
       )
@@ -48,10 +50,12 @@ export const getVersionByVersion = async (c: Context) => {
           type: gameVersion?.type,
           releaseDate: gameVersion?.releaseDate,
           importedDate: gameVersion?.importedDate,
-          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/windows/${gameVersion?.version}.zip`,
+          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/windows/${gameVersion?.version}.zip`,
           windowsSha: gameVersion?.winSha,
-          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}${process.env.DOMAIN === "localhost" && "3000"}/versions/linux/${gameVersion?.version}.zip`,
-          linuxSha: gameVersion?.linuxSha
+          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/linux/${gameVersion?.version}.zip`,
+          linuxSha: gameVersion?.linuxSha,
+          macos: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos/${gameVersion?.version}.zip`,
+          macosSha: gameVersion?.macSha
         },
         200
       )

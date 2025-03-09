@@ -1,14 +1,14 @@
 import { Worker } from "worker_threads"
 import path from "path"
 
-export async function downloadWindowsFile(version: string, versionData: DVersionType): Promise<string | null> {
+export async function downloadWindowsFile(version: string, url: string): Promise<string | null> {
   return await new Promise<string | null>((resolve) => {
     const outputPath = "/app/tmp"
     const fileName = `win-${version}.exe`
     const outFullPath = path.join(outputPath, fileName)
 
     const worker = new Worker(path.resolve(__dirname, "../workers/downloadWorker.ts"), {
-      workerData: { url: versionData.urls.cdn, outputPath, fileName }
+      workerData: { url, outputPath, fileName }
     })
 
     worker.on("message", (message) => {
@@ -30,14 +30,14 @@ export async function downloadWindowsFile(version: string, versionData: DVersion
   })
 }
 
-export async function downloadLinuxFile(version: string, versionData: DVersionType): Promise<string | null> {
+export async function downloadLinuxFile(version: string, url: string): Promise<string | null> {
   return await new Promise<string | null>((resolve) => {
     const outputPath = "/app/tmp"
     const fileName = `linux-${version}.tar.gz`
     const outFullPath = path.join(outputPath, fileName)
 
     const worker = new Worker(path.resolve(__dirname, "../workers/downloadWorker.ts"), {
-      workerData: { url: versionData.urls.cdn, outputPath, fileName }
+      workerData: { url, outputPath, fileName }
     })
 
     worker.on("message", (message) => {
@@ -59,14 +59,14 @@ export async function downloadLinuxFile(version: string, versionData: DVersionTy
   })
 }
 
-export async function downloadMacFile(version: string, versionData: DVersionType): Promise<string | null> {
+export async function downloadMacFile(version: string, url: string): Promise<string | null> {
   return await new Promise<string | null>((resolve) => {
     const outputPath = "/app/tmp"
     const fileName = `macos-${version}.tar.gz`
     const outFullPath = path.join(outputPath, fileName)
 
     const worker = new Worker(path.resolve(__dirname, "../workers/downloadWorker.ts"), {
-      workerData: { url: versionData.urls.cdn, outputPath, fileName }
+      workerData: { url, outputPath, fileName }
     })
 
     worker.on("message", (message) => {

@@ -8,10 +8,6 @@ export const ADS = new DataSource({
 })
 
 export const initializeDatabase = async () => {
-  try {
-    await ADS.initialize()
-    console.log("🟢 Data Source initialized!")
-  } catch (err) {
-    console.error("🔴 Error initializing Data Source:", err)
-  }
+  await ADS.initialize()
+  console.log("🟢 Data Source initialized!")
 }

@@ -10,11 +10,10 @@ import { resolve } from "path"
 dotenv.config({ path: "/app/.env" })
 
 // Database imports
-import { initializeDatabase, ADS } from "@db"
-import { Versions } from "@repos"
+import { initializeDatabase } from "@db"
 
-import { downloadLinuxFile, downloadMacFile, downloadWindowsFile } from "@/utils/downloadManagers"
-import { extractLinuxFile, extractMacFile, extractWindowsFile } from "@/utils/extractManagers"
+// Function imports
+import { checkVersionsTopRocess, IMPORTING } from "@/utils/checkVersionsToProcess"
 
 // Route imports
 import versionsRouter from "@/routes/versions"
@@ -43,51 +42,8 @@ app.get("/", (c) => {
 // Ruotes
 app.route("/versions", versionsRouter)
 
-app.get("/test", async (c) => {
-  test()
-  return c.json({ status: 200, message: "Recived" }, 200)
-})
-
-async function test() {
-  const gameVersionsRepo = ADS.getRepository(Versions)
-
-  const data = await fetch("https://api.vintagestory.at/stable-unstable.json")
-  const json: DVersionsType = await data.json()
-
-  const versions = Object.keys(json)
-
-  // for (const version of versions) {
-  //   const gameVersion = await gameVersionsRepo.findOneBy({ version })
-
-  //   if (gameVersion) {
-  //     console.log(`Versión ${version} ${gameVersion.id} encontrada`)
-  //     continue
-  //   }
-
-  //   await new Promise((resolve) => {
-  //     setTimeout(resolve, 2000)
-  //   })
-
-  //   console.log(`No existe la versión ${version}`)
-  // }
-
-  const version = "1.20.5-rc.3"
-  const versionData = json[version]
-
-  const winFile = await downloadWindowsFile(version, versionData["windows"])
-  const linuxFile = await downloadLinuxFile(version, versionData["linux"])
-  const macFile = await downloadMacFile(version, versionData["mac"])
-
-  if (!winFile || !linuxFile || !macFile) return console.log("🔴 Some of the OS versions couldn't be downloaded!")
-
-  const winOut = await extractWindowsFile(version, winFile)
-  const linuxOut = await extractLinuxFile(version, linuxFile)
-  const macOut = await extractMacFile(version, macFile)
-
-  if (!winOut || !linuxOut || !macOut) return console.log("🔴 Some of the OS versions couldn't be extracted!")
-
-  console.log(`🟢 All OS versions downloaded and extracted!:\n${winOut}\n${linuxOut}\n${macOut}`)
-}
+// Check for new versions and import them if they are not added yet.
+setInterval(checkVersionsTopRocess, 5000)
 
 // Initialize server
 ;(async () => {
