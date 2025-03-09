@@ -13,7 +13,7 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN)
     })
     console.log(`🟢 Successfully deleted all the app commands!`)
   } catch (error) {
-    console.error(error)
     console.log(`🔴 There was an error deleting the app commands!`)
+    console.error(error)
   }
 })()

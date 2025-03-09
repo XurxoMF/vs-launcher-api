@@ -1,34 +1,34 @@
 import { parentPort, workerData } from "worker_threads"
-import tar from "tar-fs"
-import fse from "fs-extra"
-import { createGunzip } from "zlib"
+import { createReadStream, existsSync, mkdirSync } from "fs"
+import { pipeline } from "stream/promises"
+import zlib from "zlib"
+import * as tar from "tar"
 
 const { filePath, outputPath } = workerData
 
-console.log(`💡 Extracting ${filePath} on ${outputPath}...`)
-
-if (!fse.existsSync(outputPath)) {
-  fse.mkdirSync(outputPath, { recursive: true })
+const extractTarGz = async (inputPath: string, outputPath: string) => {
+  const gunzip = zlib.createGunzip()
+  const extractStream = tar.extract({ cwd: outputPath })
+  await pipeline(createReadStream(inputPath), gunzip, extractStream)
 }
 
-const input = fse.createReadStream(filePath)
+const run = async () => {
+  try {
+    console.log(`💡 Extrayendo ${filePath} en ${outputPath}...`)
 
-const output = tar.extract(outputPath)
+    if (!existsSync(outputPath)) {
+      mkdirSync(outputPath, { recursive: true })
+    }
 
-input.on("error", (err) => {
-  console.log(`🔴 Error extracting ${filePath}!`)
-  return parentPort?.postMessage({ type: "error", error: err })
-})
+    await extractTarGz(filePath, outputPath)
 
-output.on("error", (err) => {
-  console.log(`🔴 Error extracting ${filePath}!`)
-  return parentPort?.postMessage({ type: "error", error: err })
-})
-
-input
-  .pipe(createGunzip())
-  .pipe(output)
-  .on("finish", () => {
     console.log(`🟢 Finished ${filePath} extraction!`)
-    return parentPort?.postMessage({ type: "finished", outputPath })
-  })
+    parentPort?.postMessage({ type: "finished", outputPath })
+  } catch (err) {
+    console.log(`🔴 Error extracting ${filePath}!`)
+    console.log(err)
+    parentPort?.postMessage({ type: "error" })
+  }
+}
+
+run()

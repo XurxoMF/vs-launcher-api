@@ -1,9 +1,10 @@
 import { DataSource } from "typeorm"
+import path from "path"
 
 export const ADS = new DataSource({
   type: "sqlite",
-  database: "/app/db/vslapi.sqlite",
-  entities: [__dirname + "/models/*.model.ts"],
+  database: path.resolve("/app/db/vslapi.sqlite"),
+  entities: [path.join(__dirname, "models", "*.model.{ts,js}")],
   synchronize: true
 })
 

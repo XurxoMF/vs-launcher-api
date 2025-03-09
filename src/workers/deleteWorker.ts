@@ -16,5 +16,6 @@ try {
   }
 } catch (err) {
   console.log(`🔴 Error deleting ${pathToRemove}!`)
-  parentPort?.postMessage({ type: "error", message: `Unexpected error: ${err}` })
+  console.log(err)
+  parentPort?.postMessage({ type: "error" })
 }

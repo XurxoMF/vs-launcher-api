@@ -18,13 +18,13 @@ const child = spawn(command, args, { stdio: "pipe" })
 child.stderr.on("data", (err: any) => {
   console.log(`🔴 Error extracting ${filePath}!`)
   console.log(err)
-  return parentPort?.postMessage({ type: "error", error: err })
+  return parentPort?.postMessage({ type: "error" })
 })
 
 child.on("close", (code: any) => {
   if (code !== 0) {
     console.log(`🔴 Error extracting ${filePath}!`)
-    return parentPort?.postMessage({ type: "error", error: code })
+    return parentPort?.postMessage({ type: "error" })
   }
 
   console.log(`🟢 Finished ${filePath} extraction!`)

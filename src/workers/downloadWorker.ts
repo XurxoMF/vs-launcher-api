@@ -30,10 +30,12 @@ axios({
 
     writer.on("error", (err) => {
       console.log(`🔴 Error writing ${fileName}!`)
-      parentPort?.postMessage({ type: "error", error: err })
+      console.log(err)
+      parentPort?.postMessage({ type: "error" })
     })
   })
   .catch((err) => {
     console.log(`🔴 Error downloading ${fileName}!`)
-    parentPort?.postMessage({ type: "error", error: err })
+    console.log(err)
+    parentPort?.postMessage({ type: "error" })
   })

@@ -16,8 +16,9 @@ export async function downloadWindowsFile(version: string, url: string): Promise
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Download worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -45,8 +46,9 @@ export async function downloadLinuxFile(version: string, url: string): Promise<s
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Download worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -74,8 +76,9 @@ export async function downloadMacFile(version: string, url: string): Promise<str
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Download worker error!`)
+      console.log(err)
       return resolve(null)
     })
 

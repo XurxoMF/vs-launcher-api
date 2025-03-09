@@ -20,17 +20,22 @@ for (const folder of commandFolders) {
 
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file)
-    import(filePath).then((dCommand: { default: DCommandBase }) => {
-      const command = dCommand.default
+
+    try {
+      const dCommand = await import(filePath)
+      const command: DCommandBase = dCommand.default
 
       if (!command.data || !command.execute || !command.data.toJSON) {
         console.log(`🟡 Command on ${filePath} doesn't contain data or execute!`)
-        return
+        continue
       }
 
-      commands.push(command.data.toJSON())
+      const dataJson = command.data.toJSON()
+      commands.push(dataJson)
       console.log(`🟢 Command on ${filePath} successfully loaded!`)
-    })
+    } catch (error) {
+      console.error(`🔴 Error loading command from ${filePath}:`, error)
+    }
   }
 }
 
@@ -51,7 +56,7 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN)
       console.log(`🟢 Successfully refreshed/added all the app commands!`)
     }
   } catch (error) {
-    console.error(error)
     console.log(`🔴 There was an error refreshing/adding the app commands!`)
+    console.error(error)
   }
 })()

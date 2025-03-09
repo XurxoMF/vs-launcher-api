@@ -9,6 +9,8 @@ declare global {
       DISCORD_APP_ID: string
       DISCORD_DEV_MODE: boolean
       DISCORD_DEV_ID: string
+      DISCORD_PRIV_UPDATES_WEBHOOK: string
+      DISCORD_PUBLIC_UPDATES_WEBHOOK: string
     }
   }
 }

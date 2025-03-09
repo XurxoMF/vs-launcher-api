@@ -1,4 +1,4 @@
-import { Events, Collection, BaseInteraction, AutocompleteInteraction, CacheType } from "discord.js"
+import { Events, Collection, BaseInteraction } from "discord.js"
 import { BASE_COOLDOWN } from "@/discord/config.data"
 import { getDClient } from "@/discord"
 import DClientClass from "@/discord/classes/DClient"
@@ -11,17 +11,15 @@ const interationCreateEvent: DInteractionCreateEventType = {
 
     if (interaction.isAutocomplete()) {
       const command = DClient.comandosChatImput.get(interaction.commandName)
-
-      if (command && command.autocompletado) {
+      if (command && command.autocomplete) {
         try {
-          command.autocompletado(interaction)
+          command.autocomplete(interaction)
         } catch (error) {
           console.error(error)
         }
       } else {
         console.error(`No command matching ${interaction.commandName} was found.`)
       }
-
       return
     }
 
@@ -30,7 +28,7 @@ const interationCreateEvent: DInteractionCreateEventType = {
       if (process.env.DEV_DMODE && interaction.user.id !== process.env.DEV_DID) {
         return interaction.reply({
           content: `> <@${interaction.user.id}> Bot in maintenance mode! Wait a few minutes!`,
-          ephemeral: true
+          flags: ["Ephemeral"]
         })
       }
     }
@@ -41,7 +39,7 @@ const interationCreateEvent: DInteractionCreateEventType = {
       if (!commandChatInput) {
         return interaction.reply({
           content: `Command ${interaction.commandName} doesn't exists!`,
-          ephemeral: true
+          flags: ["Ephemeral"]
         })
       }
 
@@ -52,24 +50,24 @@ const interationCreateEvent: DInteractionCreateEventType = {
         const expiredTimestamp = Math.round(isInCooldwn / 1000)
         return interaction.reply({
           content: `That command in in cooldown! You in can use it again <t:${expiredTimestamp}:R>.`,
-          ephemeral: true
+          flags: ["Ephemeral"]
         })
       }
       // END COOLDOWNS
 
       try {
-        commandChatInput.execute(DClient, interaction)
+        commandChatInput.execute(interaction)
       } catch (error) {
         console.error(error)
         if (interaction.replied || interaction.deferred) {
           await interaction.followUp({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         } else {
           await interaction.reply({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         }
       }
@@ -79,23 +77,23 @@ const interationCreateEvent: DInteractionCreateEventType = {
       if (!commandMessageContextMenu) {
         return interaction.reply({
           content: `Command ${interaction.commandName} doesn't exists!`,
-          ephemeral: true
+          flags: ["Ephemeral"]
         })
       }
 
       try {
-        commandMessageContextMenu.execute(DClient, interaction)
+        commandMessageContextMenu.execute(interaction)
       } catch (error) {
         console.error(error)
         if (interaction.replied || interaction.deferred) {
           await interaction.followUp({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         } else {
           await interaction.reply({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         }
       }
@@ -105,23 +103,23 @@ const interationCreateEvent: DInteractionCreateEventType = {
       if (!commandUserContextMenu) {
         return interaction.reply({
           content: `Command ${interaction.commandName} doesn't exists!`,
-          ephemeral: true
+          flags: ["Ephemeral"]
         })
       }
 
       try {
-        commandUserContextMenu.execute(DClient, interaction)
+        commandUserContextMenu.execute(interaction)
       } catch (error) {
         console.error(error)
         if (interaction.replied || interaction.deferred) {
           await interaction.followUp({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         } else {
           await interaction.reply({
             content: "There was an error executing that command!",
-            ephemeral: true
+            flags: ["Ephemeral"]
           })
         }
       }

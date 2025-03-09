@@ -17,7 +17,8 @@ try {
 
   archive.on("error", (err: any) => {
     console.log(`🔴 Error compressing ${inputPath}!`)
-    parentPort?.postMessage({ type: "error", message: `Unexpected error: ${err}` })
+    console.log(err)
+    parentPort?.postMessage({ type: "error" })
   })
 
   output.on("close", () => {
@@ -32,5 +33,6 @@ try {
   archive.finalize()
 } catch (err) {
   console.log(`🔴 Error compressing ${inputPath}!`)
-  parentPort?.postMessage({ type: "error", message: `Unexpected error: ${err}` })
+  console.log(err)
+  parentPort?.postMessage({ type: "error" })
 }

@@ -32,12 +32,14 @@ for (const folder of commandFolders) {
 
   for (const file of commandsFiles) {
     const filePath = path.join(commandsPath, file)
-    import(filePath).then((dCommand: { default: DCommandBase }) => {
-      const command = dCommand.default
+
+    try {
+      const dCommand = await import(filePath)
+      const command: DCommandBase = dCommand.default
 
       if (!command.data || !command.execute) {
         console.log(`🟡 Command ${filePath} doesn't contains data or execute!`)
-        return
+        continue
       }
 
       switch (command.type) {
@@ -52,8 +54,9 @@ for (const folder of commandFolders) {
         default:
           break
       }
-    })
-    const command: DCommandBase = require(filePath)
+    } catch (error) {
+      console.error(`🔴 Error loading command from ${filePath}:`, error)
+    }
   }
 }
 
@@ -63,11 +66,13 @@ const eventFiles = fse.readdirSync(eventsPath).filter((file) => file.endsWith(".
 
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file)
-  const event: DBaseEventType = require(filePath)
+  const rawEvent = await import(filePath)
+  const event: DBaseEventType = rawEvent.default
+
   if (event.once) {
-    DClient.once(event.name, (...args: any) => event.execute(DClient, ...args))
+    DClient.once(event.name, (...args: any) => event.execute(...args))
   } else {
-    DClient.on(event.name, (...args: any) => event.execute(DClient, ...args))
+    DClient.on(event.name, (...args: any) => event.execute(...args))
   }
 }
 

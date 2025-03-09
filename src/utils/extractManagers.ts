@@ -14,8 +14,9 @@ export async function extractWindowsFile(version: string, filePath: string): Pro
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Extract worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -41,8 +42,9 @@ export async function extractLinuxFile(version: string, filePath: string): Promi
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Extract worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -68,8 +70,9 @@ export async function extractMacFile(version: string, filePath: string): Promise
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Extract worker error!`)
+      console.log(err)
       return resolve(null)
     })
 

@@ -12,8 +12,9 @@ export async function generateSHA256(filePath: string): Promise<string | null> {
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 SHA256 generator worker error!`)
+      console.log(err)
       return resolve(null)
     })
 

@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
 import { getDClient } from "@/discord"
 import { DCommandChatInput, DCommandTypes } from "@/discord/discord.types"
+import { EMOJIS } from "@/discord/config.data"
 
 const command: DCommandChatInput = {
   type: DCommandTypes.ChatInput,

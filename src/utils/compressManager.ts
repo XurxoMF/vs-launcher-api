@@ -16,8 +16,9 @@ export async function compressWindowsFile(version: string, extractedFolder: stri
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Compress worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -45,8 +46,9 @@ export async function compressLinuxFile(version: string, extractedFolder: string
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Compress worker error!`)
+      console.log(err)
       return resolve(null)
     })
 
@@ -74,8 +76,9 @@ export async function compressMacFile(version: string, extractedFolder: string):
       if (message.type === "error") return resolve(null)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Compress worker error!`)
+      console.log(err)
       return resolve(null)
     })
 

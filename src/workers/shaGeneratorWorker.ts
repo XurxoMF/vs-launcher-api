@@ -23,8 +23,7 @@ hashFile(filePath)
     parentPort?.postMessage({ type: "finished", hash })
   })
   .catch((err) => {
-    console.log(err)
-
     console.log(`🔴 Error generating SHA256 for ${filePath}!`)
-    parentPort?.postMessage({ type: "error", error: err })
+    console.log(err)
+    parentPort?.postMessage({ type: "error" })
   })

@@ -1,6 +1,5 @@
 import {
   AutocompleteInteraction,
-  BaseInteraction,
   ChatInputCommandInteraction,
   ContextMenuCommandBuilder,
   MessageContextMenuCommandInteraction,
@@ -23,7 +22,7 @@ export type DCommandBase = {
 export type DCommandChatInput = DCommandBase & {
   cooldown?: number
   data: OptionalExceptFor<SlashCommandBuilder, "name">
-  autocompletado?: (interaction: AutocompleteInteraction) => void
+  autocomplete?: (interaction: AutocompleteInteraction) => void
   execute: (interaction: ChatInputCommandInteraction) => void
 }
 
@@ -48,5 +47,5 @@ export type DReadyEventType = DBaseEventType & {
 }
 
 export type DInteractionCreateEventType = DBaseEventType & {
-  execute: (integration: BaseInteraction) => void
+  execute: (interaction: any) => void
 }

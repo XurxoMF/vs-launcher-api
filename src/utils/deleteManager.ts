@@ -14,8 +14,9 @@ export async function deleteTmpFolder(): Promise<boolean> {
       if (message.type === "error") return resolve(false)
     })
 
-    worker.on("error", () => {
+    worker.on("error", (err) => {
       console.log(`🔴 Compress worker error!`)
+      console.log(err)
       return resolve(false)
     })
 
