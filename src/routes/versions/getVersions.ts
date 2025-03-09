@@ -6,7 +6,7 @@ export const getVersions = async (c: Context) => {
   const gameVersionsRepo = ADS.getRepository(Versions)
 
   try {
-    const gameVersions = await gameVersionsRepo.find({ order: { id: "DESC" } })
+    const gameVersions = await gameVersionsRepo.find({ order: { releaseDate: "DESC" } })
 
     if (!gameVersions) {
       return c.json({ message: "No versions found" }, 404)

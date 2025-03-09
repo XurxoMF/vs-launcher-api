@@ -37,14 +37,14 @@ app.use(
 
 // Health check
 app.get("/", (c) => {
-  return c.json({ status: 200, message: "Vintage Story Launcher API OK" }, 200)
+  return c.json({ status: 200, message: "VS Launcher API OK" }, 200)
 })
 
 // Ruotes
 app.route("/versions", versionsRouter)
 
 // Check for new versions and import them if they are not added yet.
-setInterval(checkVersionsTopRocess, 5000)
+setInterval(checkVersionsTopRocess, 1 * 60 * 1000)
 
 // Initialize server
 ;(async () => {
