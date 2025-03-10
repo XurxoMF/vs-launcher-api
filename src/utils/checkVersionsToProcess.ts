@@ -19,8 +19,6 @@ export async function checkVersionsTopRocess() {
   const versions = Object.keys(json).reverse()
 
   for (const version of versions) {
-    if (version != "1.20.4-rc.1") continue
-
     const gameVersion = await gameVersionsRepo.findOneBy({ version })
 
     if (gameVersion) continue
