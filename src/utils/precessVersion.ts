@@ -13,90 +13,118 @@ import { generateSHA256 } from "@/utils/shaGeneratorManager"
 export type VersionURLSType = { win: string; linux: string; macos: string }
 
 export async function processVersion(version: string, urls: VersionURLSType, releaseDate: number): Promise<boolean> {
+  console.log(`💡 Downloading VS v${version}!`)
+
+  let content = `<@&1339150731076435990> New VS Version available!`
+  let embedDesc = ``
+
+  const embed = new EmbedBuilder().setTitle(`v${version} · IMPORTING...`).setDescription(`${EMOJIS.LOADING} Preparing everything!`).setColor(EMBED_COLORS.VSL).setTimestamp(new Date())
+
   const webhook = new WebhookClient({ url: process.env.DISCORD_PUBLIC_UPDATES_WEBHOOK })
-  let content = ``
-  const embed = new EmbedBuilder().setTitle(`VS v${version} · IMPORTING`).setDescription(`${EMOJIS.LOADING} Preparing everything!`).setColor(EMBED_COLORS.VSL).setTimestamp(new Date())
-  const message = await webhook.send({ embeds: [embed] })
+  const message = await webhook.send({ content, embeds: [embed] })
 
   try {
     const gameVersionsRepo = ADS.getRepository(Versions)
 
     // Download Windows file
-    embed.setDescription(content + `${EMOJIS.LOADING} Downloading Windows file!`)
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Downloading Windows file!`)
     await webhook.editMessage(message.id, { embeds: [embed] })
     const winFile = await downloadWindowsFile(version, urls.win)
-    if (!winFile) {
-      embed.setDescription((content += `:red_circle: Windows file failed to download!\n`))
-      await webhook.editMessage(message.id, { embeds: [embed] })
-      throw new Error("Windows file failed to download!")
-    }
-    embed.setDescription((content += `:green_circle: Windows file downloaded!\n`))
+    if (!winFile) throw new Error("❌ · Windows file failed to download!")
+    embed.setDescription((embedDesc += `✅ · · Windows file downloaded!\n`))
     await webhook.editMessage(message.id, { embeds: [embed] })
 
     // Download Linux file
-    embed.setDescription(content + `${EMOJIS.LOADING} Downloading Linux file!`)
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Downloading Linux file!`)
     await webhook.editMessage(message.id, { embeds: [embed] })
     const linuxFile = await downloadLinuxFile(version, urls.linux)
-    if (!linuxFile) {
-      embed.setDescription((content += `:red_circle: Linux file failed to download!\n`))
-      await webhook.editMessage(message.id, { embeds: [embed] })
-      throw new Error("Linux file failed to download!")
-    }
-    embed.setDescription((content += `:green_circle: Linux file downloaded!\n`))
+    if (!linuxFile) throw new Error("❌ · Linux file failed to download!")
+    embed.setDescription((embedDesc += `✅ · Linux file downloaded!\n`))
     await webhook.editMessage(message.id, { embeds: [embed] })
 
     // Download MacOS file
-    embed.setDescription(content + `${EMOJIS.LOADING} Downloading MacOS file!`)
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Downloading MacOS file!`)
     await webhook.editMessage(message.id, { embeds: [embed] })
     const macFile = await downloadMacFile(version, urls.macos)
-    if (!macFile) {
-      embed.setDescription((content += `:red_circle: MacOS file failed to download!\n`))
-      await webhook.editMessage(message.id, { embeds: [embed] })
-      throw new Error("MacOS file failed to download!")
-    }
-    embed.setDescription((content += `:green_circle: MacOS file downloaded!\n`))
+    if (!macFile) throw new Error("❌ · MacOS file failed to download!")
+    embed.setDescription((embedDesc += `✅ · MacOS file downloaded!\n`))
     await webhook.editMessage(message.id, { embeds: [embed] })
 
     // Extract Windows file
-    embed.setDescription(content + `${EMOJIS.LOADING} Extracting Windows file!`)
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Extracting Windows file!`)
     await webhook.editMessage(message.id, { embeds: [embed] })
     const winOut = await extractWindowsFile(version, winFile)
-    if (!winOut) {
-      embed.setDescription((content += `:red_circle: Windows file failed to extract!\n`))
-      await webhook.editMessage(message.id, { embeds: [embed] })
-      throw new Error("Windows file failed to extract!")
-    }
-    embed.setDescription((content += `:green_circle: Windows file extracted!\n`))
+    if (!winOut) throw new Error("❌ · Windows file failed to extract!")
+    embed.setDescription((embedDesc += `✅ · Windows file extracted!\n`))
     await webhook.editMessage(message.id, { embeds: [embed] })
 
-    // TODO: Continue with logs...
+    // Extract Linux file
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Extracting Linux file!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const linuxOut = await extractLinuxFile(version, linuxFile)
+    if (!linuxOut) throw new Error("❌ · Linux file failed to extract!")
+    embed.setDescription((embedDesc += `✅ · Linux file extracted!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+
+    // Extract MacOS file
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Extracting MacOS file!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const macOut = await extractMacFile(version, macFile)
+    if (!macOut) throw new Error("❌ · MacOS file failed to extract!")
+    embed.setDescription((embedDesc += `✅ · MacOS file extracted!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
 
-    if (!winOut || !linuxOut || !macOut) {
-      console.log("🔴 Some of the OS versions couldn't be extracted!")
-      return false
-    }
-
+    // Extract Windows file
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Compressing Windows VS Version!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const winZip = await compressWindowsFile(version, winOut)
+    if (!winZip) throw new Error("❌ · Windows VS Version failed to compress!")
+    embed.setDescription((embedDesc += `✅ · Windows VS Version compressed!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+
+    // Extract Linux file
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Compressing Linux VS Version!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const linuxZip = await compressLinuxFile(version, linuxOut)
+    if (!linuxZip) throw new Error("❌ · Linux VS Version failed to compress!")
+    embed.setDescription((embedDesc += `✅ · Linux VS Version compressed!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+
+    // Extract MacOS file
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Compressing MacOS VS Version!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const macZip = await compressMacFile(version, macOut)
+    if (!macZip) throw new Error("❌ · MacOS VS Version failed to compress!")
+    embed.setDescription((embedDesc += `✅ · MacOS VS Version compressed!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
 
-    if (!winZip || !linuxZip || !macZip) {
-      console.log("🔴 Some of the OS versions couldn't be compressed!")
-      return false
-    }
-
+    // Generate Windows SHA256
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Generating Windows SHA256!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const winSha = await generateSHA256(winZip)
+    if (!winSha) throw new Error("❌ · Windows SHA256 could not be generated!")
+    embed.setDescription((embedDesc += `✅ · Windows SHA256 generated!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+
+    // Generate Linux SHA256
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Generating Linux SHA256!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const linuxSha = await generateSHA256(linuxZip)
+    if (!linuxSha) throw new Error("❌ · Linux SHA256 could not be generated!")
+    embed.setDescription((embedDesc += `✅ · Linux SHA256 generated!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+
+    // Generate MacOS SHA256
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Generating MacOS SHA256!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
     const macSha = await generateSHA256(macZip)
+    if (!macSha) throw new Error("❌ · MacOS SHA256 could not be generated!")
+    embed.setDescription((embedDesc += `✅ · MacOS SHA256 generated!\n`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
 
-    if (!winSha || !linuxSha || !macSha) {
-      console.log("🔴 Some of the OS versions failed generating their SHA256!")
-      return false
-    }
-
-    console.log("🟢 All OS versions processed! Adding them to the DB!")
+    // Add VS Versions to the DB
+    embed.setDescription(embedDesc + `${EMOJIS.LOADING} Saving VS Versions on the database!`)
+    await webhook.editMessage(message.id, { embeds: [embed] })
 
     // Get the type of the version. "stable", "rc" or "pre"
     let type: string
@@ -122,18 +150,25 @@ export async function processVersion(version: string, urls: VersionURLSType, rel
       linuxSha,
       macSha
     })
-  } catch (err) {
-    console.log("🔴 There was an error processing the files!")
+
+    embed.setDescription((embedDesc += `✅ · VS Version saved!\n\nYou can now download it on VS Launcher!`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
+  } catch (err: any) {
+    console.log(err)
+
+    embed.setDescription((embedDesc += `❌ · There was an error importing this version!`))
+    await webhook.editMessage(message.id, { embeds: [embed] })
 
     const tmpDeleted = await deleteTmpFolder()
     if (!tmpDeleted) console.log("🔴 /app/tmp folder couldn't be deleted!")
 
     return false
   } finally {
+    console.log(`🟢 VS v${version} added successfully!`)
+
     const tmpDeleted = await deleteTmpFolder()
     if (!tmpDeleted) console.log("🔴 /app/tmp folder couldn't be deleted!")
 
-    console.log("🟢 All OS versions added to the DB!")
     return true
   }
 }
