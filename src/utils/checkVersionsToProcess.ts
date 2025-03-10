@@ -29,6 +29,12 @@ export async function checkVersionsTopRocess() {
       macos: json[version]["mac"].urls.cdn
     }
 
+    if (!urls.win) urls.win = json[version]["windows"].urls.local
+    if (!urls.linux) urls.win = json[version]["linux"].urls.local
+    if (!urls.macos) urls.win = json[version]["mac"].urls.local
+
+    if (!urls.win || !urls.linux || !urls.macos) return console.log("🔴 Couldn't get some of the version URLS!")
+
     await processVersion(version, urls, Date.now())
   }
 }
