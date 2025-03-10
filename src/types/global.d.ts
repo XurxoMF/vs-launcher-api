@@ -4,8 +4,8 @@ declare global {
     filesize: string
     md5: string
     urls: {
-      cdn: string
-      local: string
+      cdn: string | null
+      local: string | null
     }
   }
 

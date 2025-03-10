@@ -19,21 +19,26 @@ export async function checkVersionsTopRocess() {
   const versions = Object.keys(json).reverse()
 
   for (const version of versions) {
+    if (version != "1.20.4-rc.1") continue
+
     const gameVersion = await gameVersionsRepo.findOneBy({ version })
 
     if (gameVersion) continue
 
-    const urls: VersionURLSType = {
-      win: json[version]["windows"].urls.cdn,
-      linux: json[version]["linux"].urls.cdn,
-      macos: json[version]["mac"].urls.cdn
+    const winUrl = json[version]["windows"].urls.cdn ?? json[version]["windows"].urls.local
+    const linuxUrl = json[version]["linux"].urls.cdn ?? json[version]["linux"].urls.local
+    const macosUrl = json[version]["mac"].urls.cdn ?? json[version]["mac"].urls.local
+
+    if (!winUrl || !linuxUrl || !macosUrl) {
+      console.log(`🔴 Couldn't get some of the URLS for the version v${version}!`)
+      continue
     }
 
-    if (!urls.win) urls.win = json[version]["windows"].urls.local
-    if (!urls.linux) urls.win = json[version]["linux"].urls.local
-    if (!urls.macos) urls.win = json[version]["mac"].urls.local
-
-    if (!urls.win || !urls.linux || !urls.macos) return console.log("🔴 Couldn't get some of the version URLS!")
+    const urls: VersionURLSType = {
+      win: winUrl,
+      linux: linuxUrl,
+      macos: macosUrl
+    }
 
     await processVersion(version, urls, Date.now())
   }
