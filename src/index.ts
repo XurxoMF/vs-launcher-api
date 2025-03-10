@@ -45,7 +45,7 @@ app.route("/versions", versionsRouter)
 
 // Check for new versions and import them if they are not added yet.
 // Default 1 * 60 * 1000
-setInterval(checkVersionsTopRocess, 1000)
+setInterval(checkVersionsTopRocess, 1 * 60 * 1000)
 
 // Initialize server
 ;(async () => {
