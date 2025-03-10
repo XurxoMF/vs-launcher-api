@@ -4,3 +4,4 @@ db/
 .env
 public/versions/
 tmp/
+package-lock.json
