@@ -6,10 +6,10 @@
   "description": "API to manage and serve vs-launcher data and files.",
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "start": "bun run src/index.ts",
-    "d-deploy-commands": "bun run src/discord/deploy-commands.ts",
-    "d-undeploy-commands": "bun run src/discord/undeploy-commands.ts"
+    "dev": "nom install && bun run --hot src/index.ts",
+    "start": "nom install && bun run src/index.ts",
+    "d-deploy-commands": "nom install && bun run src/discord/deploy-commands.ts",
+    "d-undeploy-commands": "nom install && bun run src/discord/undeploy-commands.ts"
   },
   "dependencies": {
     "archiver": "^7.0.1",
