@@ -31,7 +31,7 @@ export async function processVersion(version: string, urls: VersionURLSType, rel
     await webhook.editMessage(message.id, { embeds: [embed] })
     const winFile = await downloadWindowsFile(version, urls.win)
     if (!winFile) throw new Error("❌ · Windows file failed to download!")
-    embed.setDescription((embedDesc += `✅ · · Windows file downloaded!\n`))
+    embed.setDescription((embedDesc += `✅ · Windows file downloaded!\n`))
     await webhook.editMessage(message.id, { embeds: [embed] })
 
     // Download Linux file
