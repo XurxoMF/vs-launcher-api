@@ -40,4 +40,6 @@ export async function checkVersionsTopRocess() {
 
     await processVersion(version, urls, Date.now())
   }
+
+ IMPORTING = false
 }
