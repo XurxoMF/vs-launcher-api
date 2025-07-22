@@ -13,17 +13,18 @@ if (!fse.existsSync(outputPath)) {
 const command = "innoextract"
 const args = ["-d", outputPath, filePath]
 
-const child = spawn(command, args, { stdio: "pipe" })
+const child = spawn(command, args, { stdio: ["ignore", "pipe", "pipe"] })
 
-child.stderr.on("data", (err: any) => {
-  console.log(`🔴 Error extracting ${filePath}!`)
-  console.log(err)
-  return parentPort?.postMessage({ type: "error" })
+let stderrData = ""
+
+child.stderr.on("data", (data: Buffer) => {
+  stderrData += data.toString()
 })
 
-child.on("close", (code: any) => {
+child.on("close", (code: number) => {
   if (code !== 0) {
     console.log(`🔴 Error extracting ${filePath}!`)
+    console.error(stderrData.trim() || "(no error message)")
     return parentPort?.postMessage({ type: "error" })
   }
 
