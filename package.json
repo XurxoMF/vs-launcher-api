@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm install && bun run --hot src/index.ts",
-    "start": "npm install && bun run src/index.ts",
+    "start": "bun run src/index.ts",
     "d-deploy-commands": "npm install && bun run src/discord/deploy-commands.ts",
     "d-undeploy-commands": "npm install && bun run src/discord/undeploy-commands.ts"
   },

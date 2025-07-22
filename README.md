@@ -9,5 +9,5 @@ docker build -t vslapi-docker .
 ```
 
 ```sh
-docker run --name vslapi -d -p <external-port>:3000 -v $(pwd):/app vslapi-docker
+docker run --name vslapi -d -p <external-port>:3000 -v $(pwd)/db:/app/db -v $(pwd)/public:/app/public vslapi-docker
 ```
