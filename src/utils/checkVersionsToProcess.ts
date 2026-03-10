@@ -18,28 +18,42 @@ export async function checkVersionsTopRocess() {
 
   const versions = Object.keys(json).reverse()
 
+  // If a version fails to import 3 times it'll be added here so it's not imported anymore until an API restart
+  let ignoredVersions: string[] = []
+
   for (const version of versions) {
     const gameVersion = await gameVersionsRepo.findOneBy({ version })
 
-    if (gameVersion) continue
+    if (gameVersion && !ignoredVersions.includes(version)) continue
 
-    const winUrl = json[version]["windows"].urls.cdn ?? json[version]["windows"].urls.local
-    const linuxUrl = json[version]["linux"].urls.cdn ?? json[version]["linux"].urls.local
-    const macosUrl = json[version]["mac"].urls.cdn ?? json[version]["mac"].urls.local
+    let processing = true
+    let fails = 0
 
-    if (!winUrl || !linuxUrl || !macosUrl) {
-      console.log(`🔴 Couldn't get some of the URLS for the version v${version}!`)
-      continue
+    while (processing && fails < 3) {
+      const winUrl = json[version]["windows"].urls.cdn ?? json[version]["windows"].urls.local
+      const linuxUrl = json[version]["linux"].urls.cdn ?? json[version]["linux"].urls.local
+      const macosUrl = json[version]["mac"].urls.cdn ?? json[version]["mac"].urls.local
+
+      if (!winUrl || !linuxUrl || !macosUrl) {
+        console.log(`🔴 Couldn't get some of the URLS for the version v${version}!`)
+        continue
+      }
+
+      const urls: VersionURLSType = {
+        win: winUrl,
+        linux: linuxUrl,
+        macos: macosUrl
+      }
+
+      const imported = await processVersion(version, urls, Date.now())
+
+      if (imported) {
+        processing = false
+      } else {
+        fails++
+      }
     }
-
-    const urls: VersionURLSType = {
-      win: winUrl,
-      linux: linuxUrl,
-      macos: macosUrl
-    }
-
-    await processVersion(version, urls, Date.now())
   }
 
- IMPORTING = false
+  IMPORTING = false
 }
