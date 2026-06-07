@@ -10,7 +10,11 @@ declare global {
   }
 
   type VersionWrapperType = {
-    [platform: string]: VersionType
+    [platform: string]: VersionType | undefined;
+    linux: VersionType;
+    'macos-arm64'?: VersionType | undefined;
+    'macos-x64': VersionType;
+    windows: VersionType;
   }
 
   type VersionsType = {
