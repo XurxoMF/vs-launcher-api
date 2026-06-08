@@ -10,11 +10,15 @@ declare global {
   }
 
   type VersionWrapperType = {
-    [key: string]: VersionType
+    [platform: string]: VersionType | undefined;
+    linux: VersionType;
+    'macos-arm64'?: VersionType | undefined;
+    'macos-x64': VersionType;
+    windows: VersionType;
   }
 
   type VersionsType = {
-    [key: string]: VersionWrapperType
+    [version: string]: VersionWrapperType
   }
 
   type OptionalExceptFor<T, TRequired extends keyof T = keyof T> = Partial<Pick<T, Exclude<keyof T, TRequired>>> & Required<Pick<T, TRequired>>

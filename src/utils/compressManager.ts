@@ -61,9 +61,14 @@ export async function compressLinuxFile(version: string, extractedFolder: string
   })
 }
 
-export async function compressMacFile(version: string, extractedFolder: string): Promise<string | null> {
+/**
+ * @throws {Error} when cpuArch is not 'arm64' or 'x64'
+ */
+export async function compressMacFile(version: string, extractedFolder: string, cpuArch: 'arm64' | 'x64'): Promise<string | null> {
+  if (!['arm64', 'x64'].includes(cpuArch))
+    throw new Error('Argument "cpuArch" must be "arm64" or "x64"!')
   return await new Promise<string | null>((resolve) => {
-    const outputPath = "/app/public/versions/macos"
+    const outputPath = `/app/public/versions/macos-${cpuArch}`
     const outputFileName = `${version}.zip`
     const outFullPath = path.join(outputPath, outputFileName)
 
