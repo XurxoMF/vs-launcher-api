@@ -30,8 +30,8 @@ export async function checkVersionsTopRocess() {
     let fails = 0
 
     while (processing && fails < 3) {
-      const winUrl = json[version]["windows"].urls.cdn ?? json[version]["windows"].urls.local
-      const linuxUrl = json[version]["linux"].urls.cdn ?? json[version]["linux"].urls.local
+      const winUrl = json[version].windows.urls.cdn ?? json[version].windows.urls.local
+      const linuxUrl = json[version].linux.urls.cdn ?? json[version].linux.urls.local
       const macosArm64Url = json[version]["mac-arm64"]?.urls.cdn ?? json[version]["mac-arm64"]?.urls.local
       // "mac" no longer exists upstream; superseded by "mac-x64"
       const macosX64Url = json[version]["mac-x64"]?.urls.cdn ?? json[version]["mac-x64"]?.urls.local
