@@ -94,24 +94,24 @@ export const getVersionByVersion = async (c: Context) => {
     } else {
       return c.json(
         {
-          version: gameVersion?.version,
-          type: gameVersion?.type,
-          releaseDate: gameVersion?.releaseDate,
-          importedDate: gameVersion?.importedDate,
-          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/windows/${gameVersion?.version}.zip`,
-          windowsSha: gameVersion?.winSha,
-          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/linux/${gameVersion?.version}.zip`,
-          linuxSha: gameVersion?.linuxSha,
-          macosArm64: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-arm64/${gameVersion?.version}.zip`,
-          macosArm64Sha: gameVersion?.macArm64Sha,
-          macosX64: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-x64/${gameVersion?.version}.zip`,
-          macosX64Sha: gameVersion?.macX64Sha,
+          version: gameVersion.version,
+          type: gameVersion.type,
+          releaseDate: gameVersion.releaseDate,
+          importedDate: gameVersion.importedDate,
+          windows: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/windows/${gameVersion.version}.zip`,
+          windowsSha: gameVersion.winSha,
+          linux: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/linux/${gameVersion.version}.zip`,
+          linuxSha: gameVersion.linuxSha,
+          macosArm64: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-arm64/${gameVersion.version}.zip`,
+          macosArm64Sha: gameVersion.macArm64Sha,
+          macosX64: `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-x64/${gameVersion.version}.zip`,
+          macosX64Sha: gameVersion.macX64Sha,
           /** @deprecated */
-          macos: IsGreaterThanOrEqualTo_1_22_3(gameVersion?.version)
-            ? `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-x64/${gameVersion?.version}.zip`
-            : `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos/${gameVersion?.version}.zip`,
+          macos: IsGreaterThanOrEqualTo_1_22_3(gameVersion.version)
+            ? `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos-x64/${gameVersion.version}.zip`
+            : `${process.env.PROTOCOL}${process.env.DOMAIN}/files/versions/macos/${gameVersion.version}.zip`,
           /** @deprecated */
-          macosSha: gameVersion?.macSha ?? gameVersion?.macX64Sha
+          macosSha: gameVersion.macSha ?? gameVersion.macX64Sha
         },
         200
       )
