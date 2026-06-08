@@ -24,8 +24,18 @@ export class Versions {
   @Column()
   linuxSha!: string
 
+  // Todo: deprecate and migrate database
+  /** @deprecated superseded by {@link macX64Sha} */
   @Column()
-  macSha!: string
+  macSha?: string | null | undefined
+
+  /** `string` if `version` >= 1.22.3 */
+  @Column()
+  macArm64Sha?: string | null | undefined
+
+  /** `string` if `macSha` == (null|undefined) */
+  @Column()
+  macX64Sha?: string | null | undefined
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date
